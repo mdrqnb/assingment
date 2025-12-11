@@ -1,1 +1,2 @@
-maga shelban
+void main() {
+}
