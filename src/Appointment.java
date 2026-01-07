@@ -19,10 +19,14 @@ public class Appointment {
         this.paid = false;
     }
 
-    public String getDate() { return date; }
-    public String getReason() { return reason; }
-    public double getPrice() { return price; }
-    public boolean isPaid() { return paid; }
+    public String getDate() {
+        return date; }
+    public String getReason() {
+        return reason; }
+    public double getPrice() {
+        return price; }
+    public boolean isPaid() {
+        return paid; }
 
     public void setDate(String date) {
         if (date != null && !date.trim().isEmpty()) {

@@ -35,22 +35,24 @@ public class Animal {
     }
 
     public void setAge(int age) {
-        if (age >= 0) this.age = age;
-        else this.age = 0;
+        if (age >= 0) {
+            this.age = age;
+        } else {
+            this.age = 0;
+        }
     }
 
     public void setHealthy(boolean healthy) {
         this.healthy = healthy;
     }
 
-    // ДОБАВИЛИ: метод для полиморфизма
     public void action() {
         System.out.println("Animal " + name + " is doing something...");
     }
 
-    public boolean isAdult() { return age >= 2; }
-
-    public boolean needsCheckup() { return !healthy; }
+    public boolean needsCheckup() {
+        return !healthy;
+    }
 
     @Override
     public String toString() {

@@ -11,7 +11,9 @@ public class Cat extends Animal {
         }
     }
 
-    public String getColor() { return color; }
+    public String getColor() {
+        return color;
+    }
 
     //№1
     @Override

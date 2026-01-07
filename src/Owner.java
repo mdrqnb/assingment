@@ -33,7 +33,7 @@ public class Owner {
     }
 
     public void setPhone(String phone) {
-        if (phone != null && phone.length() >= 6) {
+        if (phone != null && phone.trim().length() >= 10) {
             this.phone = phone;
         } else {
             this.phone = "N/A";
@@ -54,10 +54,6 @@ public class Owner {
 
     public String contactInfo() {
         return name + " (" + phone + ")";
-    }
-
-    public boolean isFrequentClient() {
-        return vip;
     }
 
     @Override

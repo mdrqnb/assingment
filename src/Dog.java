@@ -12,7 +12,8 @@ public class Dog extends Animal {
     }
 
     public String getBreed() {
-        return breed; }
+        return breed;
+    }
 
     //№1
     @Override

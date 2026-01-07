@@ -24,8 +24,8 @@ public class Main {
                             "1 Add Animal (Parent)\n" +
                             "2 Add Dog (Child)\n" +
                             "3 Add Cat (Child)\n" +
-                            "4 View Animals (+ instanceof)\n" +
-                            "5 Demo Polymorphism (action)\n" +
+                            "4 View Animals \n" +
+                            "5 Demo Polymorphism \n" +
                             "6 View Animals by Type (Dog/Cat)\n" +
                             "7 Add Owner\n" +
                             "8 View Owners\n" +
@@ -61,8 +61,19 @@ public class Main {
                 case 4 -> viewAnimals();
 
                 case 5 -> {
-                    for (Animal a : animals) a.action(); // polymorphism
+                    for (Animal a : animals) {
+                        a.action();
+
+                        if (a instanceof Dog d) {
+                            System.out.println("Dog breed: " + d.getBreed());
+                            System.out.println("Old dog? " + d.isOldDog());
+                        } else if (a instanceof Cat c) {
+                            System.out.println("Cat color: " + c.getColor());
+                            System.out.println("Kitten? " + c.isKitten());
+                        }
+                    }
                 }
+
 
                 case 6 -> viewAnimalsByType();
 
@@ -124,23 +135,62 @@ public class Main {
             Animal a = animals.get(i);
             System.out.println((i + 1) + ") " + a);
 
-            if (a.needsCheckup()) System.out.println("   -> needs checkup");
+            if (a.needsCheckup())
+                System.out.println("   -> needs checkup");
 
-            if (a instanceof Dog) System.out.println("   Dog extra: breed=" + ((Dog) a).getBreed());
-            if (a instanceof Cat) System.out.println("   Cat extra: color=" + ((Cat) a).getColor());
+            if (a instanceof Dog)
+                System.out.println("   Dog extra: breed=" + ((Dog) a).getBreed());
+            if (a instanceof Cat)
+                System.out.println("   Cat extra: color=" + ((Cat) a).getColor());
         }
     }
 
     static void viewAnimalsByType() {
-        String t = in("Type (dog/cat): ").toLowerCase();
+        String t = in("Type (dog/cat): ").trim().toLowerCase();
         for (Animal a : animals) {
-            if (t.equals("dog") && a instanceof Dog) System.out.println(a);
-            if (t.equals("cat") && a instanceof Cat) System.out.println(a);
+            if (t.equals("dog") && a instanceof Dog)
+                System.out.println(a);
+            if (t.equals("cat") && a instanceof Cat)
+                System.out.println(a);
         }
     }
 
-    static String in(String p) { System.out.print(p); return sc.nextLine(); }
-    static int inInt(String p) { return Integer.parseInt(in(p)); }
-    static double inDouble(String p) { return Double.parseDouble(in(p)); }
-    static boolean inBool(String p) { return Boolean.parseBoolean(in(p)); }
+    static String in(String p) {
+        System.out.print(p);
+        return sc.nextLine();
+    }
+
+    static int inInt(String p) {
+        while (true) {
+            try {
+                String s = in(p).trim();
+                return Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите целое число!");
+            }
+        }
+    }
+
+    static double inDouble(String p) {
+        while (true) {
+            try {
+                String s = in(p).trim();
+                return Double.parseDouble(s);
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка: введите число!");
+            }
+        }
+    }
+
+    static boolean inBool(String p) {
+        while (true) {
+            String s = in(p).trim().toLowerCase();
+            if (s.equals("true"))
+                return true;
+            if (s.equals("false"))
+                return false;
+            System.out.println("Ошибка: введите только true или false!");
+        }
+    }
+
 }
