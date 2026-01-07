@@ -19,14 +19,24 @@ public class Animal {
         this.healthy = true;
     }
 
-    public String getName() { return name; }
-    public String getType() { return type; }
-    public int getAge() { return age; }
-    public boolean isHealthy() { return healthy; }
+    public String getName() {
+        return name;
+    }
+    public String getType() {
+        return type;
+    }
+    public int getAge() {
+        return age;
+    }
+    public boolean isHealthy() {
+        return healthy;
+    }
 
     public void setName(String name) {
-        if (name != null && !name.trim().isEmpty()) this.name = name;
-        else this.name = "Unknown";
+        if (name != null && !name.trim().isEmpty())
+            this.name = name;
+        else
+            this.name = "Unknown";
     }
 
     public void setType(String type) {

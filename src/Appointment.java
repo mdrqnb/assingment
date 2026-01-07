@@ -20,13 +20,17 @@ public class Appointment {
     }
 
     public String getDate() {
-        return date; }
+        return date;
+    }
     public String getReason() {
-        return reason; }
+        return reason;
+    }
     public double getPrice() {
-        return price; }
+        return price;
+    }
     public boolean isPaid() {
-        return paid; }
+        return paid;
+    }
 
     public void setDate(String date) {
         if (date != null && !date.trim().isEmpty()) {
