@@ -3,7 +3,7 @@ public class Dog extends Animal {
     private String breed;
 
     public Dog(String name, int age, boolean healthy, String breed) {
-        super(name, "Dog", age, healthy);   // super() first
+        super(name, "Dog", age, healthy);
         if (breed == null || breed.trim().isEmpty()) {
             this.breed = "Unknown";
         } else {
