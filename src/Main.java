@@ -192,5 +192,4 @@ public class Main {
             System.out.println("Ошибка: введите только true или false!");
         }
     }
-
 }

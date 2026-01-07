@@ -19,10 +19,18 @@ public class Owner {
         this.vip = false;
     }
 
-    public String getName() { return name; }
-    public String getPhone() { return phone; }
-    public String getEmail() { return email; }
-    public boolean isVip() { return vip; }
+    public String getName() {
+        return name;
+    }
+    public String getPhone() {
+        return phone;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public boolean isVip() {
+        return vip;
+    }
 
     public void setName(String name) {
         if (name != null && !name.trim().isEmpty()) {
