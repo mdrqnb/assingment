@@ -1,3 +1,5 @@
+package model;
+
 public class Appointment {
 
     private String date;
@@ -9,7 +11,7 @@ public class Appointment {
         setDate(date);
         setReason(reason);
         setPrice(price);
-        this.paid = paid;
+        setPaid(paid);
     }
 
     public Appointment() {
@@ -33,27 +35,24 @@ public class Appointment {
     }
 
     public void setDate(String date) {
-        if (date != null && !date.trim().isEmpty()) {
-            this.date = date;
-        } else {
-            this.date = "Not set";
+        if (date == null || date.trim().isEmpty()) {
+            throw new IllegalArgumentException("Date cannot be empty");
         }
+        this.date = date.trim();
     }
 
     public void setReason(String reason) {
-        if (reason != null && !reason.trim().isEmpty()) {
-            this.reason = reason;
-        } else {
-            this.reason = "Not specified";
+        if (reason == null || reason.trim().isEmpty()) {
+            throw new IllegalArgumentException("Reason cannot be empty");
         }
+        this.reason = reason.trim();
     }
 
     public void setPrice(double price) {
-        if (price >= 0) {
-            this.price = price;
-        } else {
-            this.price = 0.0;
+        if (price < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
         }
+        this.price = price;
     }
 
     public void setPaid(boolean paid) {

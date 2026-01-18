@@ -1,33 +1,35 @@
+package model;
+
 public class Cat extends Animal {
 
     private String color;
 
     public Cat(String name, int age, boolean healthy, String color) {
         super(name, "Cat", age, healthy);
-        if (color == null || color.trim().isEmpty()) {
-            this.color = "Unknown";
-        } else {
-            this.color = color;
-        }
+        setColor(color);
     }
 
     public String getColor() {
         return color;
     }
 
-    //№1
+    public void setColor(String color) {
+        if (color == null || color.trim().isEmpty()) {
+            throw new IllegalArgumentException("Cat color cannot be empty");
+        }
+        this.color = color.trim();
+    }
+
     @Override
     public void action() {
         System.out.println("Cat " + name + " purrs!");
     }
 
-    //№2
     @Override
     public boolean needsCheckup() {
         return !healthy || age < 1;
     }
 
-    // 2 unique methods
     public void meow() {
         System.out.println(name + ": Meow!");
     }

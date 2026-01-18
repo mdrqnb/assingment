@@ -1,3 +1,5 @@
+package model;
+
 public class Owner {
 
     private String name;
@@ -9,12 +11,12 @@ public class Owner {
         setName(name);
         setPhone(phone);
         setEmail(email);
-        this.vip = vip;
+        setVip(vip);
     }
 
     public Owner() {
         this.name = "Unknown";
-        this.phone = "N/A";
+        this.phone = "0000000000";
         this.email = "unknown@email.com";
         this.vip = false;
     }
@@ -33,27 +35,24 @@ public class Owner {
     }
 
     public void setName(String name) {
-        if (name != null && !name.trim().isEmpty()) {
-            this.name = name;
-        } else {
-            this.name = "Unknown";
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Owner name cannot be empty");
         }
+        this.name = name.trim();
     }
 
     public void setPhone(String phone) {
-        if (phone != null && phone.trim().length() >= 10) {
-            this.phone = phone;
-        } else {
-            this.phone = "N/A";
+        if (phone == null || phone.trim().length() < 10) {
+            throw new IllegalArgumentException("Phone must be at least 10 chars");
         }
+        this.phone = phone.trim();
     }
 
     public void setEmail(String email) {
-        if (email != null && email.contains("@")) {
-            this.email = email;
-        } else {
-            this.email = "unknown@email.com";
+        if (email == null || !email.contains("@")) {
+            throw new IllegalArgumentException("Invalid email");
         }
+        this.email = email.trim();
     }
 
     public void setVip(boolean vip) {

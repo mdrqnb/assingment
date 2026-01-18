@@ -1,4 +1,6 @@
-public class Animal {
+package model;
+
+public abstract class Animal {
 
     protected String name;
     protected String type;
@@ -9,7 +11,7 @@ public class Animal {
         setName(name);
         setType(type);
         setAge(age);
-        this.healthy = healthy;
+        setHealthy(healthy);
     }
 
     public Animal() {
@@ -33,32 +35,31 @@ public class Animal {
     }
 
     public void setName(String name) {
-        if (name != null && !name.trim().isEmpty())
-            this.name = name;
-        else
-            this.name = "Unknown";
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Animal name cannot be empty");
+        }
+        this.name = name.trim();
     }
 
     public void setType(String type) {
-        if (type != null && !type.trim().isEmpty()) this.type = type;
-        else this.type = "Unknown";
+        if (type == null || type.trim().isEmpty()) {
+            throw new IllegalArgumentException("Animal type cannot be empty");
+        }
+        this.type = type.trim();
     }
 
     public void setAge(int age) {
-        if (age >= 0) {
-            this.age = age;
-        } else {
-            this.age = 0;
+        if (age < 0) {
+            throw new IllegalArgumentException("Animal age cannot be negative: " + age);
         }
+        this.age = age;
     }
 
     public void setHealthy(boolean healthy) {
         this.healthy = healthy;
     }
 
-    public void action() {
-        System.out.println("Animal " + name + " is doing something...");
-    }
+    public abstract void action();
 
     public boolean needsCheckup() {
         return !healthy;
