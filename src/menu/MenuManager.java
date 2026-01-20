@@ -1,4 +1,5 @@
 package menu;
+
 import exception.InvalidInputException;
 import model.*;
 
@@ -27,12 +28,12 @@ public class MenuManager implements Menu {
     public void displayMenu() {
         System.out.println(
                 "\n=== MENU ===\n" +
-                        "1 Add Dog (Child)\n" +
-                        "2 Add Cat (Child)\n" +
+                        "1 Add Dog\n" +
+                        "2 Add Cat\n" +
                         "3 View Animals\n" +
                         "4 Demo Polymorphism\n" +
-                        "5 View Animals by Type (Dog/Cat)\n" +
-                        "6 Train Dog (interface demo)\n" +
+                        "5 View Animals by Type (dog/cat)\n" +
+                        "6 Train Dog\n" +
                         "7 Add Owner\n" +
                         "8 View Owners\n" +
                         "9 Add Appointment\n" +
@@ -53,23 +54,49 @@ public class MenuManager implements Menu {
                 int ch = readIntLine();
 
                 switch (ch) {
-                    case 1 -> addDog();
-                    case 2 -> addCat();
-                    case 3 -> viewAnimals();
-                    case 4 -> demoPolymorphism();
-                    case 5 -> viewAnimalsByType();
-                    case 6 -> trainDog();
-                    case 7 -> addOwner();
-                    case 8 -> viewOwners();
-                    case 9 -> addAppointment();
-                    case 10 -> viewAppointments();
-                    case 11 -> payAppointment();
-                    case 12 -> vipDiscount();
-                    case 0 -> {
+                    case 1:
+                        addDog();
+                        break;
+                    case 2:
+                        addCat();
+                        break;
+                    case 3:
+                        viewAnimals();
+                        break;
+                    case 4:
+                        demoPolymorphism();
+                        break;
+                    case 5:
+                        viewAnimalsByType();
+                        break;
+                    case 6:
+                        trainDog();
+                        break;
+                    case 7:
+                        addOwner();
+                        break;
+                    case 8:
+                        viewOwners();
+                        break;
+                    case 9:
+                        addAppointment();
+                        break;
+                    case 10:
+                        viewAppointments();
+                        break;
+                    case 11:
+                        payAppointment();
+                        break;
+                    case 12:
+                        vipDiscount();
+                        break;
+                    case 0:
+                        // Если это единственный ввод в программе — можно закрывать.
+                        // Если есть еще ввод после меню — лучше НЕ закрывать System.in
                         sc.close();
                         return;
-                    }
-                    default -> System.out.println("Wrong choice.");
+                    default:
+                        System.out.println("Wrong choice.");
                 }
 
             } catch (NumberFormatException e) {
@@ -113,10 +140,12 @@ public class MenuManager implements Menu {
                 System.out.println("   -> needs checkup");
             }
 
-            if (a instanceof Dog d) {
+            if (a instanceof Dog) {
+                Dog d = (Dog) a;
                 System.out.println("   Dog extra: breed=" + d.getBreed() + ", trick=" + d.getTrick());
                 System.out.println("   Old dog? " + d.isOldDog());
-            } else if (a instanceof Cat c) {
+            } else if (a instanceof Cat) {
+                Cat c = (Cat) a;
                 System.out.println("   Cat extra: color=" + c.getColor());
                 System.out.println("   Kitten? " + c.isKitten());
             }
@@ -124,29 +153,64 @@ public class MenuManager implements Menu {
     }
 
     private void demoPolymorphism() {
-        // ✅ Полиморфизм как в твоём case 5
         for (Animal a : animals) {
-            a.action(); // один метод — разная реализация у Dog/Cat
+            a.action();
         }
     }
 
     private void viewAnimalsByType() throws InvalidInputException {
         String t = readNonEmpty("Type (dog/cat): ").trim().toLowerCase();
+
+        if (!t.equals("dog") && !t.equals("cat")) {
+            throw new InvalidInputException("Type must be dog or cat.");
+        }
+
+        boolean found = false;
         for (Animal a : animals) {
-            if (t.equals("dog") && a instanceof Dog) System.out.println(a);
-            if (t.equals("cat") && a instanceof Cat) System.out.println(a);
+            if (t.equals("dog") && a instanceof Dog) {
+                System.out.println(a);
+                found = true;
+            }
+            if (t.equals("cat") && a instanceof Cat) {
+                System.out.println(a);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No animals of this type.");
         }
     }
 
+    // ВАЖНО: теперь выбор собаки делается по списку собак, а не по общему animals
     private void trainDog() throws InvalidInputException {
-        int idx = readInt("Dog number: ") - 1;
-        if (idx < 0 || idx >= animals.size() || !(animals.get(idx) instanceof Dog)) {
-            throw new InvalidInputException("Wrong number or it's not a Dog.");
+        ArrayList<Integer> dogIndexes = new ArrayList<>();
+        for (int i = 0; i < animals.size(); i++) {
+            if (animals.get(i) instanceof Dog) {
+                dogIndexes.add(i);
+            }
         }
-        Dog d = (Dog) animals.get(idx);
+
+        if (dogIndexes.isEmpty()) {
+            System.out.println("No dogs available.");
+            return;
+        }
+
+        System.out.println("Dogs list:");
+        for (int i = 0; i < dogIndexes.size(); i++) {
+            Dog d = (Dog) animals.get(dogIndexes.get(i));
+            System.out.println((i + 1) + ") " + d.getName() + " | breed=" + d.getBreed() + " | trick=" + d.getTrick());
+        }
+
+        int choice = readInt("Choose dog number: ") - 1;
+        if (choice < 0 || choice >= dogIndexes.size()) {
+            throw new InvalidInputException("Wrong dog number.");
+        }
+
+        Dog d = (Dog) animals.get(dogIndexes.get(choice));
         String trick = readNonEmpty("Trick: ");
         d.train(trick);
-        System.out.println("✅ Trained! Now trick = " + d.getTrick());
+        System.out.println("Trained! Now trick = " + d.getTrick());
     }
 
     private void addOwner() throws InvalidInputException {
@@ -156,7 +220,7 @@ public class MenuManager implements Menu {
         boolean vip = readBool("VIP (true/false): ");
 
         owners.add(new Owner(name, phone, email, vip));
-        System.out.println("✅ Owner added!");
+        System.out.println("Owner added!");
     }
 
     private void viewOwners() {
@@ -173,7 +237,7 @@ public class MenuManager implements Menu {
         boolean paid = readBool("Paid (true/false): ");
 
         appointments.add(new Appointment(date, reason, price, paid));
-        System.out.println("✅ Appointment added!");
+        System.out.println("Appointment added!");
     }
 
     private void viewAppointments() {
@@ -188,7 +252,7 @@ public class MenuManager implements Menu {
             throw new InvalidInputException("Wrong number.");
         }
         appointments.get(idx).pay();
-        System.out.println("✅ Paid!");
+        System.out.println("Paid!");
     }
 
     private void vipDiscount() throws InvalidInputException {
@@ -197,22 +261,34 @@ public class MenuManager implements Menu {
 
         if (oIdx < 0 || oIdx >= owners.size() || aIdx < 0 || aIdx >= appointments.size()) {
             throw new InvalidInputException("Wrong number.");
-        } else if (owners.get(oIdx).isVip()) {
-            appointments.get(aIdx).applyDiscount();
+        }
+
+        if (!owners.get(oIdx).isVip()) {
+            System.out.println("Owner is NOT VIP.");
+            return;
+        }
+
+        boolean applied = appointments.get(aIdx).applyDiscount();
+        if (applied) {
             System.out.println("Discount applied!");
         } else {
-            System.out.println("Owner is NOT VIP.");
+            System.out.println("Discount NOT applied.");
         }
     }
 
-    private int readIntLine() {
-        return Integer.parseInt(sc.nextLine().trim());
+    private int readIntLine() throws InvalidInputException {
+        String s = readNonEmpty("");
+        try {
+            return Integer.parseInt(s.trim());
+        } catch (NumberFormatException e) {
+            throw new InvalidInputException("Enter a valid INTEGER number.");
+        }
     }
 
     private String readNonEmpty(String prompt) throws InvalidInputException {
-        System.out.print(prompt);
+        if (!prompt.isEmpty()) System.out.print(prompt);
         String s = sc.nextLine();
-        if (s == null || s.trim().isEmpty()) {
+        if (s.trim().isEmpty()) {
             throw new InvalidInputException("Input cannot be empty.");
         }
         return s.trim();

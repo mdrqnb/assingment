@@ -7,11 +7,14 @@ public class Appointment {
     private double price;
     private boolean paid;
 
+    private boolean discounted;
+
     public Appointment(String date, String reason, double price, boolean paid) {
         setDate(date);
         setReason(reason);
         setPrice(price);
         setPaid(paid);
+        this.discounted = false;
     }
 
     public Appointment() {
@@ -19,19 +22,27 @@ public class Appointment {
         this.reason = "Not specified";
         this.price = 0.0;
         this.paid = false;
+        this.discounted = false;
     }
 
     public String getDate() {
         return date;
     }
+
     public String getReason() {
         return reason;
     }
+
     public double getPrice() {
         return price;
     }
+
     public boolean isPaid() {
         return paid;
+    }
+
+    public boolean isDiscounted() {
+        return discounted;
     }
 
     public void setDate(String date) {
@@ -60,18 +71,25 @@ public class Appointment {
     }
 
     public void pay() {
+        if (paid) return;
         paid = true;
     }
 
-    public void applyDiscount() {
-        if (!paid) {
-            price = price * 0.9;
-        }
+    public boolean applyDiscount() {
+        if (paid)
+            return false;
+        if (discounted)
+            return false;
+
+        price = price * 0.9;
+        discounted = true;
+        return true;
     }
 
     @Override
     public String toString() {
         return "Appointment{date='" + date + "', reason='" + reason +
-                "', price=" + price + ", paid=" + paid + "}";
+                "', price=" + price + ", paid=" + paid +
+                ", discounted=" + discounted + "}";
     }
 }
