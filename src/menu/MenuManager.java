@@ -91,8 +91,6 @@ public class MenuManager implements Menu {
                         vipDiscount();
                         break;
                     case 0:
-                        // Если это единственный ввод в программе — можно закрывать.
-                        // Если есть еще ввод после меню — лучше НЕ закрывать System.in
                         sc.close();
                         return;
                     default:
@@ -142,12 +140,12 @@ public class MenuManager implements Menu {
 
             if (a instanceof Dog) {
                 Dog d = (Dog) a;
-                System.out.println("   Dog extra: breed=" + d.getBreed() + ", trick=" + d.getTrick());
-                System.out.println("   Old dog? " + d.isOldDog());
+                System.out.println("Dog extra: breed=" + d.getBreed() + ", trick=" + d.getTrick());
+                System.out.println("Old dog? " + d.isOldDog());
             } else if (a instanceof Cat) {
                 Cat c = (Cat) a;
-                System.out.println("   Cat extra: color=" + c.getColor());
-                System.out.println("   Kitten? " + c.isKitten());
+                System.out.println("Cat extra: color=" + c.getColor());
+                System.out.println("Kitten? " + c.isKitten());
             }
         }
     }
@@ -182,7 +180,6 @@ public class MenuManager implements Menu {
         }
     }
 
-    // ВАЖНО: теперь выбор собаки делается по списку собак, а не по общему animals
     private void trainDog() throws InvalidInputException {
         ArrayList<Integer> dogIndexes = new ArrayList<>();
         for (int i = 0; i < animals.size(); i++) {
