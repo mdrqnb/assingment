@@ -2,8 +2,8 @@ package model;
 
 public class Dog extends Animal implements Trainable {
 
-    private String breed;
-    private String trick = "None";
+   private String breed;
+   private String trick = "None";
 
     public Dog(String name, int age, boolean healthy, String breed) {
         super(name, "Dog", age, healthy);
@@ -15,7 +15,7 @@ public class Dog extends Animal implements Trainable {
     }
 
     public void setBreed(String breed) {
-        if (breed == null || breed.trim().isEmpty()) {
+        if (breed == null || breed.trim().isEmpty()){
             throw new IllegalArgumentException("Dog breed cannot be empty");
         }
         this.breed = breed.trim();
@@ -31,21 +31,21 @@ public class Dog extends Animal implements Trainable {
         return !healthy || age >= 7;
     }
 
-    public void bark() {
-        System.out.println(name + ": Woof!");
+    public void barks() {
+        System.out.println(name + " woofs!");
     }
 
     public boolean isOldDog() {
         return age >= 7;
     }
 
-    @Override
-    public void train(String trick) {
+   @Override
+   public void train(String trick) {
         if (trick == null || trick.trim().isEmpty()) {
             throw new IllegalArgumentException("Trick cannot be empty");
         }
         this.trick = trick.trim();
-    }
+   }
 
     @Override
     public String getTrick() {

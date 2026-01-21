@@ -42,14 +42,14 @@ public class Owner {
     }
 
     public void setPhone(String phone) {
-        if (phone == null || phone.trim().length() < 10) {
-            throw new IllegalArgumentException("Phone must be at least 10 chars");
+        if (phone == null || phone.trim().length() < 10){
+            throw new IllegalArgumentException("Phone number must be least 10 chars");
         }
         this.phone = phone.trim();
     }
 
     public void setEmail(String email) {
-        if (email == null || !email.contains("@")) {
+        if (email == null || !email.contains("@")){
             throw new IllegalArgumentException("Invalid email");
         }
         this.email = email.trim();
@@ -59,8 +59,8 @@ public class Owner {
         this.vip = vip;
     }
 
-    public String contactInfo() {
-        return name + " (" + phone + ")";
+    public String contactInfo(){
+       return name + " ( " + phone + " )";
     }
 
     @Override
