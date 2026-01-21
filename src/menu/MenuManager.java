@@ -114,7 +114,6 @@ public class MenuManager implements Menu {
         int age = readInt("Age: ");
         boolean healthy = readBool("Healthy (true/false): ");
         String breed = readNonEmpty("Breed: ");
-
         animals.add(new Dog(name, age, healthy, breed));
         System.out.println("Dog added!");
     }
@@ -124,7 +123,6 @@ public class MenuManager implements Menu {
         int age = readInt("Age: ");
         boolean healthy = readBool("Healthy (true/false): ");
         String color = readNonEmpty("Color: ");
-
         animals.add(new Cat(name, age, healthy, color));
         System.out.println("Cat added!");
     }
@@ -132,20 +130,9 @@ public class MenuManager implements Menu {
     private void viewAnimals() {
         for (int i = 0; i < animals.size(); i++) {
             Animal a = animals.get(i);
-            System.out.println((i + 1) + ") " + a);
-
-            if (a.needsCheckup()) {
-                System.out.println("   -> needs checkup");
-            }
-
-            if (a instanceof Dog) {
-                Dog d = (Dog) a;
-                System.out.println("Dog extra: breed=" + d.getBreed() + ", trick=" + d.getTrick());
-                System.out.println("Old dog? " + d.isOldDog());
-            } else if (a instanceof Cat) {
-                Cat c = (Cat) a;
-                System.out.println("Cat extra: color=" + c.getColor());
-                System.out.println("Kitten? " + c.isKitten());
+            System.out.println((i + 1) + ") " + a + (a.needsCheckup() ? "  -> needs checkup" : ""));
+            if (a instanceof Trainable) {
+                System.out.println("   trick=" + ((Trainable) a).getTrick());
             }
         }
     }
@@ -215,7 +202,6 @@ public class MenuManager implements Menu {
         String phone = readNonEmpty("Phone: ");
         String email = readNonEmpty("Email: ");
         boolean vip = readBool("VIP (true/false): ");
-
         owners.add(new Owner(name, phone, email, vip));
         System.out.println("Owner added!");
     }
@@ -232,7 +218,6 @@ public class MenuManager implements Menu {
         String reason = readNonEmpty("Reason: ");
         double price = readDouble("Price: ");
         boolean paid = readBool("Paid (true/false): ");
-
         appointments.add(new Appointment(date, reason, price, paid));
         System.out.println("Appointment added!");
     }
