@@ -54,7 +54,7 @@ public class MenuManager implements Menu {
                     case 1 -> addDog();
                     case 2 -> addCat();
                     case 3 -> viewAnimals();
-                    case 4 -> trainDog();   // или trainPet(), если ты его используешь
+                    case 4 -> trainDog();
                     case 5 -> addOwner();
                     case 6 -> viewOwners();
                     case 7 -> addAppointment();
