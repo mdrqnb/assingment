@@ -87,8 +87,8 @@ public class Appointment {
 
     @Override
     public String toString() {
-        return "Appointment{date='" + date + "', reason='" + reason +
-                "', price=" + price + ", paid=" + paid +
-                ", discounted=" + discounted + "}";
+        return "Appointment{date = '" + date + "', reason = '" + reason +
+                "', price = " + price + ", paid = " + paid +
+                ", discounted = " + discounted + "}";
     }
 }

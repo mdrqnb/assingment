@@ -48,12 +48,13 @@ public abstract class Animal {
         this.type = type.trim();
     }
 
-    public void setAge(int age){
-        if(age < 0){
+    public void setAge(int age) {
+        if (age < 0){
             throw new IllegalArgumentException("Animal age cannot be negative" + age);
         }
         this.age = age;
     }
+
 
     public void setHealthy(boolean healthy){
         this.healthy = healthy;

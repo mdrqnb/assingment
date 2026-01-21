@@ -8,11 +8,11 @@ import java.util.Scanner;
 
 public class MenuManager implements Menu {
 
-    private final Scanner sc = new Scanner(System.in);
+   private final Scanner sc = new Scanner(System.in);
 
-    private final ArrayList<Animal> animals = new ArrayList<>();
-    private final ArrayList<Owner> owners = new ArrayList<>();
-    private final ArrayList<Appointment> appointments = new ArrayList<>();
+   private final ArrayList<Animal> animals = new ArrayList<>();
+   private final ArrayList<Owner> owners = new ArrayList<>();
+   private final ArrayList<Appointment> appointments = new ArrayList<>();
 
     public MenuManager() {
         animals.add(new Dog("Rex", 8, true, "Ovcharka"));
@@ -31,23 +31,22 @@ public class MenuManager implements Menu {
                         "1 Add Dog\n" +
                         "2 Add Cat\n" +
                         "3 View Animals\n" +
-                        "4 Demo Polymorphism\n" +
-                        "5 Train Dog\n" +
-                        "6 Add Owner\n" +
-                        "7 View Owners\n" +
-                        "8 Add Appointment\n" +
-                        "9 View Appointments\n" +
-                        "10 Pay Appointment\n" +
-                        "11 VIP Discount for Appointment\n" +
+                        "4 Train Dog\n" +
+                        "5 Add Owner\n" +
+                        "6 View Owners\n" +
+                        "7 Add Appointment\n" +
+                        "8 View Appointments\n" +
+                        "9 Pay Appointment\n" +
+                        "10 VIP Discount for Appointment\n" +
                         "0 Exit"
         );
     }
 
     @Override
-    public void run() {
-        while (true) {
+    public void run(){
+        while(true){
             displayMenu();
-            System.out.print("Choice: ");
+            System.out.println("Choice: ");
 
             try {
                 int ch = readIntLine();
@@ -63,27 +62,24 @@ public class MenuManager implements Menu {
                         viewAnimals();
                         break;
                     case 4:
-                        demoPolymorphism();
-                        break;
-                    case 5:
                         trainDog();
                         break;
-                    case 6:
+                    case 5:
                         addOwner();
                         break;
-                    case 7:
+                    case 6:
                         viewOwners();
                         break;
-                    case 8:
+                    case 7:
                         addAppointment();
                         break;
-                    case 9:
+                    case 8:
                         viewAppointments();
                         break;
-                    case 10:
+                    case 9:
                         payAppointment();
                         break;
-                    case 11:
+                    case 10:
                         vipDiscount();
                         break;
                     case 0:
@@ -130,12 +126,6 @@ public class MenuManager implements Menu {
             if (a instanceof Trainable) {
                 System.out.println("   trick=" + ((Trainable) a).getTrick());
             }
-        }
-    }
-
-    private void demoPolymorphism() {
-        for (Animal a : animals) {
-            a.action();
         }
     }
 
