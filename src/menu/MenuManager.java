@@ -36,8 +36,7 @@ public class MenuManager implements Menu {
                         "6 View Owners\n" +
                         "7 Add Appointment\n" +
                         "8 View Appointments\n" +
-                        "9 Pay Appointment\n" +
-                        "10 VIP Discount for Appointment\n" +
+                        "9 VIP Discount for Appointment\n" +
                         "0 Exit"
         );
     }
@@ -77,9 +76,6 @@ public class MenuManager implements Menu {
                         viewAppointments();
                         break;
                     case 9:
-                        payAppointment();
-                        break;
-                    case 10:
                         vipDiscount();
                         break;
                     case 0:
@@ -120,12 +116,11 @@ public class MenuManager implements Menu {
     }
 
     private void viewAnimals() {
-        for (int i = 0; i < animals.size(); i++) {
-            Animal a = animals.get(i);
-            System.out.println((i + 1) + ") " + a + (a.needsCheckup() ? "  -> needs checkup" : ""));
-            if (a instanceof Trainable) {
-                System.out.println("   trick=" + ((Trainable) a).getTrick());
-            }
+        int i = 1;
+        for (Animal a : animals) {
+            System.out.println(i++ + ") " + a);
+            if (a.needsCheckup()) System.out.println("  --> needs Checkup");
+            System.out.println();
         }
     }
 
@@ -188,15 +183,6 @@ public class MenuManager implements Menu {
         for (int i = 0; i < appointments.size(); i++) {
             System.out.println((i + 1) + ") " + appointments.get(i));
         }
-    }
-
-    private void payAppointment() throws InvalidInputException {
-        int idx = readInt("Appointment number: ") - 1;
-        if (idx < 0 || idx >= appointments.size()) {
-            throw new InvalidInputException("Wrong number.");
-        }
-        appointments.get(idx).pay();
-        System.out.println("Paid!");
     }
 
     private void vipDiscount() throws InvalidInputException {
