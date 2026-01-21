@@ -32,14 +32,13 @@ public class MenuManager implements Menu {
                         "2 Add Cat\n" +
                         "3 View Animals\n" +
                         "4 Demo Polymorphism\n" +
-                        "5 View Animals by Type (dog/cat)\n" +
-                        "6 Train Dog\n" +
-                        "7 Add Owner\n" +
-                        "8 View Owners\n" +
-                        "9 Add Appointment\n" +
-                        "10 View Appointments\n" +
-                        "11 Pay Appointment\n" +
-                        "12 VIP Discount for Appointment\n" +
+                        "5 Train Dog\n" +
+                        "6 Add Owner\n" +
+                        "7 View Owners\n" +
+                        "8 Add Appointment\n" +
+                        "9 View Appointments\n" +
+                        "10 Pay Appointment\n" +
+                        "11 VIP Discount for Appointment\n" +
                         "0 Exit"
         );
     }
@@ -67,27 +66,24 @@ public class MenuManager implements Menu {
                         demoPolymorphism();
                         break;
                     case 5:
-                        viewAnimalsByType();
-                        break;
-                    case 6:
                         trainDog();
                         break;
-                    case 7:
+                    case 6:
                         addOwner();
                         break;
-                    case 8:
+                    case 7:
                         viewOwners();
                         break;
-                    case 9:
+                    case 8:
                         addAppointment();
                         break;
-                    case 10:
+                    case 9:
                         viewAppointments();
                         break;
-                    case 11:
+                    case 10:
                         payAppointment();
                         break;
-                    case 12:
+                    case 11:
                         vipDiscount();
                         break;
                     case 0:
@@ -140,30 +136,6 @@ public class MenuManager implements Menu {
     private void demoPolymorphism() {
         for (Animal a : animals) {
             a.action();
-        }
-    }
-
-    private void viewAnimalsByType() throws InvalidInputException {
-        String t = readNonEmpty("Type (dog/cat): ").trim().toLowerCase();
-
-        if (!t.equals("dog") && !t.equals("cat")) {
-            throw new InvalidInputException("Type must be dog or cat.");
-        }
-
-        boolean found = false;
-        for (Animal a : animals) {
-            if (t.equals("dog") && a instanceof Dog) {
-                System.out.println(a);
-                found = true;
-            }
-            if (t.equals("cat") && a instanceof Cat) {
-                System.out.println(a);
-                found = true;
-            }
-        }
-
-        if (!found) {
-            System.out.println("No animals of this type.");
         }
     }
 
