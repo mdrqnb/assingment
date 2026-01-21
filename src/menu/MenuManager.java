@@ -42,13 +42,11 @@ public class MenuManager implements Menu {
     }
 
     @Override
-    public void run(){
-        while(true){
+    public void run() {
+        while (true) {
             displayMenu();
-            System.out.println("Choice: ");
-
             try {
-                int ch = readIntLine();
+                int ch = readInt("Choice: ");
 
                 switch (ch) {
                     case 1 -> addDog();
@@ -64,15 +62,13 @@ public class MenuManager implements Menu {
                         sc.close();
                         return;
                     }
-                    default -> System.out.println("Wrong choice.");
+                    default -> System.out.println("Wrong choice");
                 }
 
-            } catch (NumberFormatException e) {
-                System.out.println("Error: enter a NUMBER!");
-            } catch (IllegalArgumentException e) {
-                System.out.println("Validation error: " + e.getMessage());
             } catch (InvalidInputException e) {
                 System.out.println("Input error: " + e.getMessage());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Validation error: " + e.getMessage());
             } catch (Exception e) {
                 System.out.println("Unexpected error: " + e.getMessage());
             }
@@ -85,7 +81,7 @@ public class MenuManager implements Menu {
         boolean healthy = readBool("Healthy (true/false): ");
         String breed = readNonEmpty("Breed: ");
         animals.add(new Dog(name, age, healthy, breed));
-        System.out.println("Dog added!");
+        System.out.println("Dog added");
     }
 
     private void addCat() throws InvalidInputException {
@@ -94,7 +90,7 @@ public class MenuManager implements Menu {
         boolean healthy = readBool("Healthy (true/false): ");
         String color = readNonEmpty("Color: ");
         animals.add(new Cat(name, age, healthy, color));
-        System.out.println("Cat added!");
+        System.out.println("Cat added");
     }
 
     private void viewAnimals() {
@@ -107,33 +103,26 @@ public class MenuManager implements Menu {
     }
 
     private void trainDog() throws InvalidInputException {
-        ArrayList<Integer> dogIndexes = new ArrayList<>();
-        for (int i = 0; i < animals.size(); i++) {
-            if (animals.get(i) instanceof Dog) {
-                dogIndexes.add(i);
-            }
-        }
+        ArrayList<Dog> dogs = new ArrayList<>();
 
-        if (dogIndexes.isEmpty()) {
-            System.out.println("No dogs available.");
+        for (Animal a : animals)
+            if (a instanceof Dog)
+                dogs.add((Dog) a);
+
+        if (dogs.isEmpty()) {
+            System.out.println("No dogs available");
             return;
         }
 
-        System.out.println("Dogs list:");
-        for (int i = 0; i < dogIndexes.size(); i++) {
-            Dog d = (Dog) animals.get(dogIndexes.get(i));
-            System.out.println((i + 1) + ") " + d.getName() + " | breed=" + d.getBreed() + " | trick=" + d.getTrick());
-        }
+        for (int i = 0; i < dogs.size(); i++)
+            System.out.println((i + 1) + ") " + dogs.get(i));
 
-        int choice = readInt("Choose dog number: ") - 1;
-        if (choice < 0 || choice >= dogIndexes.size()) {
-            throw new InvalidInputException("Wrong dog number.");
-        }
+        int idx = readInt("Choose dog number: ") - 1;
+        if (idx < 0 || idx >= dogs.size())
+            throw new InvalidInputException("Wrong dog number");
 
-        Dog d = (Dog) animals.get(dogIndexes.get(choice));
-        String trick = readNonEmpty("Trick: ");
-        d.train(trick);
-        System.out.println("Trained! Now trick = " + d.getTrick());
+        dogs.get(idx).train(readNonEmpty("Trick: "));
+        System.out.println("Trained. Now trick = " + dogs.get(idx).getTrick());
     }
 
     private void addOwner() throws InvalidInputException {
@@ -142,13 +131,13 @@ public class MenuManager implements Menu {
         String email = readNonEmpty("Email: ");
         boolean vip = readBool("VIP (true/false): ");
         owners.add(new Owner(name, phone, email, vip));
-        System.out.println("Owner added!");
+        System.out.println("Owner added");
     }
 
     private void viewOwners() {
         for (int i = 0; i < owners.size(); i++) {
             Owner o = owners.get(i);
-            System.out.println((i + 1) + ") " + o.contactInfo() + " | VIP=" + o.isVip());
+            System.out.println((i + 1) + ") " + o.contactInfo() + " | VIP = " + o.isVip());
         }
     }
 
@@ -158,7 +147,7 @@ public class MenuManager implements Menu {
         double price = readDouble("Price: ");
         boolean paid = readBool("Paid (true/false): ");
         appointments.add(new Appointment(date, reason, price, paid));
-        System.out.println("Appointment added!");
+        System.out.println("Appointment added");
     }
 
     private void viewAppointments() {
@@ -171,56 +160,42 @@ public class MenuManager implements Menu {
         int oIdx = readInt("Owner number: ") - 1;
         int aIdx = readInt("Appointment number: ") - 1;
 
-        if (oIdx < 0 || oIdx >= owners.size() || aIdx < 0 || aIdx >= appointments.size()) {
-            throw new InvalidInputException("Wrong number.");
-        }
+        if (oIdx < 0 || oIdx >= owners.size())
+            throw new InvalidInputException("Wrong owner number");
+        if (aIdx < 0 || aIdx >= appointments.size())
+            throw new InvalidInputException("Wrong appointment number");
 
         if (!owners.get(oIdx).isVip()) {
-            System.out.println("Owner is NOT VIP.");
+            System.out.println("Owner is NOT VIP");
             return;
         }
 
-        boolean applied = appointments.get(aIdx).applyDiscount();
-        if (applied) {
-            System.out.println("Discount applied!");
-        } else {
-            System.out.println("Discount NOT applied.");
-        }
-    }
-
-    private int readIntLine() throws InvalidInputException {
-        String s = readNonEmpty("");
-        try {
-            return Integer.parseInt(s.trim());
-        } catch (NumberFormatException e) {
-            throw new InvalidInputException("Enter a valid INTEGER number.");
-        }
+        System.out.println(appointments.get(aIdx).applyDiscount()
+                ? "Discount applied"
+                : "Discount NOT applied");
     }
 
     private String readNonEmpty(String prompt) throws InvalidInputException {
-        if (!prompt.isEmpty()) System.out.print(prompt);
-        String s = sc.nextLine();
-        if (s.trim().isEmpty()) {
-            throw new InvalidInputException("Input cannot be empty.");
-        }
-        return s.trim();
+        System.out.print(prompt);
+        String s = sc.nextLine().trim();
+        if (s.isEmpty())
+            throw new InvalidInputException("Input cannot be empty");
+        return s;
     }
 
     private int readInt(String prompt) throws InvalidInputException {
-        String s = readNonEmpty(prompt);
         try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            throw new InvalidInputException("Enter a valid INTEGER number.");
+            return Integer.parseInt(readNonEmpty(prompt)); }
+        catch (NumberFormatException e) {
+            throw new InvalidInputException("Enter a valid INTEGER number");
         }
     }
 
     private double readDouble(String prompt) throws InvalidInputException {
-        String s = readNonEmpty(prompt);
         try {
-            return Double.parseDouble(s);
-        } catch (NumberFormatException e) {
-            throw new InvalidInputException("Enter a valid DOUBLE number.");
+            return Double.parseDouble(readNonEmpty(prompt)); }
+        catch (NumberFormatException e) {
+            throw new InvalidInputException("Enter a valid DOUBLE number");
         }
     }
 
@@ -230,6 +205,6 @@ public class MenuManager implements Menu {
             return true;
         if (s.equals("false"))
             return false;
-        throw new InvalidInputException("Enter only true or false.");
+        throw new InvalidInputException("Enter only true or false");
     }
 }
