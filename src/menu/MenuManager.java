@@ -51,38 +51,20 @@ public class MenuManager implements Menu {
                 int ch = readIntLine();
 
                 switch (ch) {
-                    case 1:
-                        addDog();
-                        break;
-                    case 2:
-                        addCat();
-                        break;
-                    case 3:
-                        viewAnimals();
-                        break;
-                    case 4:
-                        trainDog();
-                        break;
-                    case 5:
-                        addOwner();
-                        break;
-                    case 6:
-                        viewOwners();
-                        break;
-                    case 7:
-                        addAppointment();
-                        break;
-                    case 8:
-                        viewAppointments();
-                        break;
-                    case 9:
-                        vipDiscount();
-                        break;
-                    case 0:
+                    case 1 -> addDog();
+                    case 2 -> addCat();
+                    case 3 -> viewAnimals();
+                    case 4 -> trainDog();   // или trainPet(), если ты его используешь
+                    case 5 -> addOwner();
+                    case 6 -> viewOwners();
+                    case 7 -> addAppointment();
+                    case 8 -> viewAppointments();
+                    case 9 -> vipDiscount();
+                    case 0 -> {
                         sc.close();
                         return;
-                    default:
-                        System.out.println("Wrong choice.");
+                    }
+                    default -> System.out.println("Wrong choice.");
                 }
 
             } catch (NumberFormatException e) {
