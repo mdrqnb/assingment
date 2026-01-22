@@ -55,7 +55,6 @@ public abstract class Animal {
         this.age = age;
     }
 
-
     public void setHealthy(boolean healthy){
         this.healthy = healthy;
     }

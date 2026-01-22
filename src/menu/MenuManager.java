@@ -65,7 +65,7 @@ public class MenuManager implements Menu {
                     default -> System.out.println("Wrong choice");
                 }
 
-            } catch (InvalidInputException e) {
+            } catch (InvalidInputException e){
                 System.out.println("Input error: " + e.getMessage());
             } catch (IllegalArgumentException e) {
                 System.out.println("Validation error: " + e.getMessage());
@@ -103,26 +103,17 @@ public class MenuManager implements Menu {
     }
 
     private void trainDog() throws InvalidInputException {
-        ArrayList<Dog> dogs = new ArrayList<>();
+        int idx = readInt("Animal number: ") - 1;
 
-        for (Animal a : animals)
-            if (a instanceof Dog)
-                dogs.add((Dog) a);
+        if (idx < 0 || idx >= animals.size())
+            throw new InvalidInputException("Wrong number.");
 
-        if (dogs.isEmpty()) {
-            System.out.println("No dogs available");
-            return;
-        }
+        if (!(animals.get(idx) instanceof Dog))
+            throw new InvalidInputException("This is not a Dog.");
 
-        for (int i = 0; i < dogs.size(); i++)
-            System.out.println((i + 1) + ") " + dogs.get(i));
-
-        int idx = readInt("Choose dog number: ") - 1;
-        if (idx < 0 || idx >= dogs.size())
-            throw new InvalidInputException("Wrong dog number");
-
-        dogs.get(idx).train(readNonEmpty("Trick: "));
-        System.out.println("Trained. Now trick = " + dogs.get(idx).getTrick());
+        Dog d = (Dog) animals.get(idx);
+        d.train(readNonEmpty("Trick: "));
+        System.out.println("Trained! Now trick = " + d.getTrick());
     }
 
     private void addOwner() throws InvalidInputException {
