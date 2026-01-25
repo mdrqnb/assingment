@@ -8,11 +8,11 @@ import java.util.Scanner;
 
 public class MenuManager implements Menu {
 
-   private final Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
-   private final ArrayList<Animal> animals = new ArrayList<>();
-   private final ArrayList<Owner> owners = new ArrayList<>();
-   private final ArrayList<Appointment> appointments = new ArrayList<>();
+    private final ArrayList<Animal> animals = new ArrayList<>();
+    private final ArrayList<Owner> owners = new ArrayList<>();
+    private final ArrayList<Appointment> appointments = new ArrayList<>();
 
     public MenuManager() {
         animals.add(new Dog("Rex", 8, true, "Ovcharka"));
@@ -103,17 +103,26 @@ public class MenuManager implements Menu {
     }
 
     private void trainDog() throws InvalidInputException {
-        int idx = readInt("Animal number: ") - 1;
+        ArrayList<Dog> dogs = new ArrayList<>();
 
-        if (idx < 0 || idx >= animals.size())
-            throw new InvalidInputException("Wrong number.");
+        for (Animal a : animals)
+            if (a instanceof Dog)
+                dogs.add((Dog) a);
 
-        if (!(animals.get(idx) instanceof Dog))
-            throw new InvalidInputException("This is not a Dog.");
+        if (dogs.isEmpty()) {
+            System.out.println("No dogs available");
+            return;
+        }
 
-        Dog d = (Dog) animals.get(idx);
-        d.train(readNonEmpty("Trick: "));
-        System.out.println("Trained! Now trick = " + d.getTrick());
+        for (int i = 0; i < dogs.size(); i++)
+            System.out.println((i + 1) + ") " + dogs.get(i));
+
+        int idx = readInt("Choose dog number: ") - 1;
+        if (idx < 0 || idx >= dogs.size())
+            throw new InvalidInputException("Wrong dog number");
+
+        dogs.get(idx).train(readNonEmpty("Trick: "));
+        System.out.println("Trained. Now trick = " + dogs.get(idx).getTrick());
     }
 
     private void addOwner() throws InvalidInputException {
