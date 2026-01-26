@@ -5,22 +5,19 @@ import exception.InvalidInputException;
 import model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuManager implements Menu {
 
     private final Scanner sc = new Scanner(System.in);
 
-    private final ArrayList<Animal> animals = new ArrayList<>();
+    private final AnimalDAO animalDAO = new AnimalDAO();
+
     private final ArrayList<Owner> owners = new ArrayList<>();
     private final ArrayList<Appointment> appointments = new ArrayList<>();
 
-    private final AnimalDAO animalDAO = new AnimalDAO();
-
     public MenuManager() {
-        animals.add(new Dog("Rex", 8, true, "Ovcharka"));
-        animals.add(new Cat("Barsik", 1, false, "White"));
-
         owners.add(new Owner("Ali", "87001234567", "ali@mail.com", false));
         owners.add(new Owner("Dana", "87771234567", "dana@mail.com", true));
 
@@ -31,15 +28,19 @@ public class MenuManager implements Menu {
     public void displayMenu() {
         System.out.println(
                 "\n=== MENU ===\n" +
-                        "1 Add Dog\n" +
-                        "2 Add Cat\n" +
-                        "3 View Animals\n" +
-                        "4 Train Dog\n" +
-                        "5 Add Owner\n" +
-                        "6 View Owners\n" +
-                        "7 Add Appointment\n" +
-                        "8 View Appointments\n" +
-                        "9 VIP Discount for Appointment\n" +
+                        "1 Add Dog (DB)\n" +
+                        "2 Add Cat (DB)\n" +
+                        "3 View Animals (DB)\n" +
+                        "4 Update Animal (DB)\n" +
+                        "5 Delete Animal (DB)\n" +
+                        "6 Search Animal by Name (DB)\n" +
+                        "7 Search Animals by Age Range (DB)\n" +
+                        "8 Search Animals by Min Age (DB)\n" +
+                        "9 Add Owner\n" +
+                        "10 View Owners\n" +
+                        "11 Add Appointment\n" +
+                        "12 View Appointments\n" +
+                        "13 VIP Discount for Appointment\n" +
                         "0 Exit"
         );
     }
@@ -52,15 +53,20 @@ public class MenuManager implements Menu {
                 int ch = readInt("Choice: ");
 
                 switch (ch) {
-                    case 1 -> addDog();
-                    case 2 -> addCat();
-                    case 3 -> viewAnimals();
-                    case 4 -> trainDog();
-                    case 5 -> addOwner();
-                    case 6 -> viewOwners();
-                    case 7 -> addAppointment();
-                    case 8 -> viewAppointments();
-                    case 9 -> vipDiscount();
+                    case 1 -> addDogDb();
+                    case 2 -> addCatDb();
+                    case 3 -> viewAnimalsDb();
+                    case 4 -> updateAnimalDb();
+                    case 5 -> deleteAnimalDb();
+                    case 6 -> searchByNameDb();
+                    case 7 -> searchByAgeRangeDb();
+                    case 8 -> searchByMinAgeDb();
+                    case 9 -> addOwner();
+                    case 10 -> viewOwners();
+                    case 11 -> addAppointment();
+                    case 12 -> viewAppointments();
+                    case 13 -> vipDiscount();
+
                     case 0 -> {
                         sc.close();
                         return;
@@ -68,7 +74,7 @@ public class MenuManager implements Menu {
                     default -> System.out.println("Wrong choice");
                 }
 
-            } catch (InvalidInputException e){
+            } catch (InvalidInputException e) {
                 System.out.println("Input error: " + e.getMessage());
             } catch (IllegalArgumentException e) {
                 System.out.println("Validation error: " + e.getMessage());
@@ -78,66 +84,98 @@ public class MenuManager implements Menu {
         }
     }
 
-    private void addDog() throws InvalidInputException {
+    private void addDogDb() throws InvalidInputException {
         String name = readNonEmpty("Name: ");
         int age = readInt("Age: ");
         boolean healthy = readBool("Healthy (true/false): ");
         String breed = readNonEmpty("Breed: ");
 
         Dog dog = new Dog(name, age, healthy, breed);
-        animals.add(dog);
-        System.out.println("Dog added");
 
         boolean ok = animalDAO.insertAnimal(dog);
-        if (!ok) System.out.println("WARNING: Dog was NOT saved to database!");
+        System.out.println(ok ? "Dog saved to DB" : "Dog NOT saved to DB");
     }
 
-    private void addCat() throws InvalidInputException {
+    private void addCatDb() throws InvalidInputException {
         String name = readNonEmpty("Name: ");
         int age = readInt("Age: ");
         boolean healthy = readBool("Healthy (true/false): ");
         String color = readNonEmpty("Color: ");
 
         Cat cat = new Cat(name, age, healthy, color);
-        animals.add(cat);
-        System.out.println("Cat added");
 
         boolean ok = animalDAO.insertAnimal(cat);
-        if (!ok) System.out.println("WARNING: Cat was NOT saved to database!");
+        System.out.println(ok ? "Cat saved to DB" : "Cat NOT saved to DB");
     }
 
-    private void viewAnimals() {
+    private void viewAnimalsDb() {
         animalDAO.printAllAnimals();
-
-        int i = 1;
-        for (Animal a : animals) {
-            System.out.println(i++ + ") " + a);
-            if (a.needsCheckup()) System.out.println("  --> needs Checkup");
-            System.out.println();
-        }
     }
 
-    private void trainDog() throws InvalidInputException {
-        ArrayList<Dog> dogs = new ArrayList<>();
+    private void updateAnimalDb() throws InvalidInputException {
+        int id = readInt("Enter animal_id to update: ");
 
-        for (Animal a : animals)
-            if (a instanceof Dog)
-                dogs.add((Dog) a);
+        Animal existing = animalDAO.getAnimalById(id);
+        if (existing == null) {
+            System.out.println("No animal found with ID: " + id);
+            return;
+        }
+        System.out.println("Current: " + existing);
 
-        if (dogs.isEmpty()) {
-            System.out.println("No dogs available");
+        String newName = readNonEmpty("New name: ");
+        String newType = readNonEmpty("New type (Dog/Cat): ");
+        int newAge = readInt("New age: ");
+        boolean newHealthy = readBool("New healthy (true/false): ");
+
+        boolean ok = animalDAO.updateAnimal(id, newName, newType, newAge, newHealthy);
+        System.out.println(ok ? "Updated" : "Update failed");
+    }
+
+    private void deleteAnimalDb() throws InvalidInputException {
+        int id = readInt("Enter animal_id to delete: ");
+
+        Animal existing = animalDAO.getAnimalById(id);
+        if (existing == null) {
+            System.out.println("No animal found with ID: " + id);
             return;
         }
 
-        for (int i = 0; i < dogs.size(); i++)
-            System.out.println((i + 1) + ") " + dogs.get(i));
+        System.out.println("Animal to delete: " + existing);
+        String confirm = readNonEmpty("Are you sure? (yes/no): ");
+        if (!confirm.equalsIgnoreCase("yes")) {
+            System.out.println("Deletion cancelled.");
+            return;
+        }
 
-        int idx = readInt("Choose dog number: ") - 1;
-        if (idx < 0 || idx >= dogs.size())
-            throw new InvalidInputException("Wrong dog number");
+        boolean ok = animalDAO.deleteAnimal(id);
+        System.out.println(ok ? "Deleted" : "Delete failed");
+    }
 
-        dogs.get(idx).train(readNonEmpty("Trick: "));
-        System.out.println("Trained. Now trick = " + dogs.get(idx).getTrick());
+    private void searchByNameDb() throws InvalidInputException {
+        String q = readNonEmpty("Enter part of name: ");
+        List<Animal> found = animalDAO.searchByName(q);
+
+        System.out.println("--- Found: " + found.size() + " ---");
+        for (Animal a : found) System.out.println(a);
+    }
+
+    private void searchByAgeRangeDb() throws InvalidInputException {
+        int min = readInt("Min age: ");
+        int max = readInt("Max age: ");
+
+        List<Animal> found = animalDAO.searchByAgeRange(min, max);
+
+        System.out.println("--- Found: " + found.size() + " ---");
+        for (Animal a : found) System.out.println(a);
+    }
+
+    private void searchByMinAgeDb() throws InvalidInputException {
+        int min = readInt("Min age: ");
+
+        List<Animal> found = animalDAO.searchByMinAge(min);
+
+        System.out.println("--- Found: " + found.size() + " ---");
+        for (Animal a : found) System.out.println(a);
     }
 
     private void addOwner() throws InvalidInputException {
@@ -216,10 +254,8 @@ public class MenuManager implements Menu {
 
     private boolean readBool(String prompt) throws InvalidInputException {
         String s = readNonEmpty(prompt).toLowerCase();
-        if (s.equals("true"))
-            return true;
-        if (s.equals("false"))
-            return false;
+        if (s.equals("true")) return true;
+        if (s.equals("false")) return false;
         throw new InvalidInputException("Enter only true or false");
     }
 }
