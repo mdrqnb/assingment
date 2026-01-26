@@ -1,5 +1,6 @@
 package menu;
 
+import database.AnimalDAO;
 import exception.InvalidInputException;
 import model.*;
 
@@ -13,6 +14,8 @@ public class MenuManager implements Menu {
     private final ArrayList<Animal> animals = new ArrayList<>();
     private final ArrayList<Owner> owners = new ArrayList<>();
     private final ArrayList<Appointment> appointments = new ArrayList<>();
+
+    private final AnimalDAO animalDAO = new AnimalDAO();
 
     public MenuManager() {
         animals.add(new Dog("Rex", 8, true, "Ovcharka"));
@@ -80,8 +83,13 @@ public class MenuManager implements Menu {
         int age = readInt("Age: ");
         boolean healthy = readBool("Healthy (true/false): ");
         String breed = readNonEmpty("Breed: ");
-        animals.add(new Dog(name, age, healthy, breed));
+
+        Dog dog = new Dog(name, age, healthy, breed);
+        animals.add(dog);
         System.out.println("Dog added");
+
+        boolean ok = animalDAO.insertAnimal(dog);
+        if (!ok) System.out.println("WARNING: Dog was NOT saved to database!");
     }
 
     private void addCat() throws InvalidInputException {
@@ -89,11 +97,18 @@ public class MenuManager implements Menu {
         int age = readInt("Age: ");
         boolean healthy = readBool("Healthy (true/false): ");
         String color = readNonEmpty("Color: ");
-        animals.add(new Cat(name, age, healthy, color));
+
+        Cat cat = new Cat(name, age, healthy, color);
+        animals.add(cat);
         System.out.println("Cat added");
+
+        boolean ok = animalDAO.insertAnimal(cat);
+        if (!ok) System.out.println("WARNING: Cat was NOT saved to database!");
     }
 
     private void viewAnimals() {
+        animalDAO.printAllAnimals();
+
         int i = 1;
         for (Animal a : animals) {
             System.out.println(i++ + ") " + a);
@@ -185,16 +200,16 @@ public class MenuManager implements Menu {
 
     private int readInt(String prompt) throws InvalidInputException {
         try {
-            return Integer.parseInt(readNonEmpty(prompt)); }
-        catch (NumberFormatException e) {
+            return Integer.parseInt(readNonEmpty(prompt));
+        } catch (NumberFormatException e) {
             throw new InvalidInputException("Enter a valid INTEGER number");
         }
     }
 
     private double readDouble(String prompt) throws InvalidInputException {
         try {
-            return Double.parseDouble(readNonEmpty(prompt)); }
-        catch (NumberFormatException e) {
+            return Double.parseDouble(readNonEmpty(prompt));
+        } catch (NumberFormatException e) {
             throw new InvalidInputException("Enter a valid DOUBLE number");
         }
     }
