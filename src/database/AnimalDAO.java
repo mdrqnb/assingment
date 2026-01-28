@@ -43,7 +43,7 @@ public class AnimalDAO {
         try (PreparedStatement st = c.prepareStatement(sql);
              ResultSet rs = st.executeQuery()) {
 
-            System.out.println("\n--- ALL ANIMALS FROM DB ---");
+            System.out.println("\n--- All animals from DB ---");
             while (rs.next()) {
                 System.out.println(
                         rs.getInt("animal_id") + ") " +
@@ -195,7 +195,6 @@ public class AnimalDAO {
         }
     }
 
-    // --- Week 8: Search by Min Age (>=, ordered DESC) ---
     public List<Animal> searchByMinAge(int minAge) {
         List<Animal> list = new ArrayList<>();
         String sql = "SELECT animal_id, name, type, age, healthy " +
