@@ -26,7 +26,7 @@ public class AnimalDAO {
             return rows > 0;
 
         } catch (SQLException e) {
-            System.out.println("Insert failed!");
+            System.out.println("Insert failed");
             e.printStackTrace();
             return false;
 
@@ -55,7 +55,7 @@ public class AnimalDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Select failed!");
+            System.out.println("Select failed");
             e.printStackTrace();
         } finally {
             DatabaseConnection.closeConnection(c);
@@ -78,7 +78,7 @@ public class AnimalDAO {
             return null;
 
         } catch (SQLException e) {
-            System.out.println("getAnimalById failed!");
+            System.out.println("getAnimalById failed");
             e.printStackTrace();
             return null;
 
@@ -126,7 +126,7 @@ public class AnimalDAO {
             return rows > 0;
 
         } catch (SQLException e) {
-            System.out.println("Delete failed!");
+            System.out.println("Delete failed");
             e.printStackTrace();
             return false;
 
@@ -155,7 +155,7 @@ public class AnimalDAO {
             return list;
 
         } catch (SQLException e) {
-            System.out.println("Search by name failed!");
+            System.out.println("Search failed");
             e.printStackTrace();
             return list;
 
@@ -186,7 +186,7 @@ public class AnimalDAO {
             return list;
 
         } catch (SQLException e) {
-            System.out.println("Search by age range failed!");
+            System.out.println("Search failed");
             e.printStackTrace();
             return list;
 
@@ -216,7 +216,7 @@ public class AnimalDAO {
             return list;
 
         } catch (SQLException e) {
-            System.out.println("Search by min age failed!");
+            System.out.println("Search failed");
             e.printStackTrace();
             return list;
 
