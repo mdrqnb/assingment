@@ -4,25 +4,13 @@ import database.AnimalDAO;
 import exception.InvalidInputException;
 import model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class MenuManager implements Menu {
 
     private final Scanner sc = new Scanner(System.in);
-
     private final AnimalDAO animalDAO = new AnimalDAO();
-
-    private final ArrayList<Owner> owners = new ArrayList<>();
-    private final ArrayList<Appointment> appointments = new ArrayList<>();
-
-    public MenuManager() {
-        owners.add(new Owner("Ali", "87001234567", "ali@mail.com", false));
-        owners.add(new Owner("Dana", "87771234567", "dana@mail.com", true));
-
-        appointments.add(new Appointment("10.09.2025", "Checkup", 10000, false));
-    }
 
     @Override
     public void displayMenu() {
@@ -40,7 +28,6 @@ public class MenuManager implements Menu {
                         "10 View Owners\n" +
                         "11 Add Appointment\n" +
                         "12 View Appointments\n" +
-                        "13 VIP Discount for Appointment\n" +
                         "0 Exit"
         );
     }
@@ -61,11 +48,10 @@ public class MenuManager implements Menu {
                     case 6 -> searchByNameDb();
                     case 7 -> searchByAgeRangeDb();
                     case 8 -> searchByMinAgeDb();
-                    case 9 -> addOwner();
-                    case 10 -> viewOwners();
-                    case 11 -> addAppointment();
-                    case 12 -> viewAppointments();
-                    case 13 -> vipDiscount();
+                    case 9 -> tempOwner();
+                    case 10 -> tempAppointment();
+                    case 11 -> tempOwnerAndAppointment();
+                    case 12 -> tempVipDiscount();
 
                     case 0 -> {
                         sc.close();
@@ -178,54 +164,54 @@ public class MenuManager implements Menu {
         for (Animal a : found) System.out.println(a);
     }
 
-    private void addOwner() throws InvalidInputException {
-        String name = readNonEmpty("Name: ");
+    private Owner inputOwner() throws InvalidInputException {
+        String name = readNonEmpty("Owner name: ");
         String phone = readNonEmpty("Phone: ");
         String email = readNonEmpty("Email: ");
         boolean vip = readBool("VIP (true/false): ");
-        owners.add(new Owner(name, phone, email, vip));
-        System.out.println("Owner added");
+        return new Owner(name, phone, email, vip);
     }
 
-    private void viewOwners() {
-        for (int i = 0; i < owners.size(); i++) {
-            Owner o = owners.get(i);
-            System.out.println((i + 1) + ") " + o.contactInfo() + " | VIP = " + o.isVip());
-        }
-    }
-
-    private void addAppointment() throws InvalidInputException {
+    private Appointment inputAppointment() throws InvalidInputException {
         String date = readNonEmpty("Date: ");
         String reason = readNonEmpty("Reason: ");
         double price = readDouble("Price: ");
         boolean paid = readBool("Paid (true/false): ");
-        appointments.add(new Appointment(date, reason, price, paid));
-        System.out.println("Appointment added");
+        return new Appointment(date, reason, price, paid);
     }
 
-    private void viewAppointments() {
-        for (int i = 0; i < appointments.size(); i++) {
-            System.out.println((i + 1) + ") " + appointments.get(i));
-        }
+    private void tempOwner() throws InvalidInputException {
+        System.out.println("\n--- OWNER ---");
+        Owner o = inputOwner();
+        System.out.println(o);
     }
 
-    private void vipDiscount() throws InvalidInputException {
-        int oIdx = readInt("Owner number: ") - 1;
-        int aIdx = readInt("Appointment number: ") - 1;
+    private void tempAppointment() throws InvalidInputException {
+        System.out.println("\n--- APPOINTMENT ---");
+        Appointment a = inputAppointment();
+        System.out.println(a);
+    }
 
-        if (oIdx < 0 || oIdx >= owners.size())
-            throw new InvalidInputException("Wrong owner number");
-        if (aIdx < 0 || aIdx >= appointments.size())
-            throw new InvalidInputException("Wrong appointment number");
+    private void tempOwnerAndAppointment() throws InvalidInputException {
+        System.out.println("\n---  OWNER + APPOINTMENT ---");
+        Owner o = inputOwner();
+        Appointment a = inputAppointment();
+        System.out.println(o);
+        System.out.println(a);
+    }
 
-        if (!owners.get(oIdx).isVip()) {
-            System.out.println("Owner is NOT VIP");
-            return;
+    private void tempVipDiscount() throws InvalidInputException {
+        System.out.println("\n--- VIP DISCOUNT ---");
+        Owner o = inputOwner();
+        Appointment a = inputAppointment();
+
+        if (o.isVip()) {
+            boolean ok = a.applyDiscount();
+            System.out.println(ok ? "Discount applied!" : "Discount NOT applied.");
+        } else {
+            System.out.println("Owner is not VIP. No discount.");
         }
-
-        System.out.println(appointments.get(aIdx).applyDiscount()
-                ? "Discount applied"
-                : "Discount NOT applied");
+        System.out.println("Result appointment: " + a);
     }
 
     private String readNonEmpty(String prompt) throws InvalidInputException {
