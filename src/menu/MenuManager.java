@@ -23,10 +23,11 @@ public class MenuManager implements Menu {
                         "5 Delete Animal (DB)\n" +
                         "6 Search Animal by Name (DB)\n" +
                         "7 Search Animals by Age Range (DB)\n" +
-                        "8 Add Owner\n" +
-                        "9 View Owners\n" +
-                        "10 Add Appointment\n" +
-                        "11 View Appointments\n" +
+                        "8 Search Animals by Min Age (DB)\n" +
+                        "9 Add Owner\n" +
+                        "10 View Owners\n" +
+                        "11 Add Appointment\n" +
+                        "12 View Appointments\n" +
                         "0 Exit"
         );
     }
@@ -46,10 +47,11 @@ public class MenuManager implements Menu {
                     case 5 -> deleteAnimalDb();
                     case 6 -> searchByNameDb();
                     case 7 -> searchByAgeRangeDb();
-                    case 8 -> tempOwner();
-                    case 9 -> tempAppointment();
-                    case 10 -> tempOwnerAndAppointment();
-                    case 11 -> tempVipDiscount();
+                    case 8 -> searchByMinAgeDb();
+                    case 9 -> tempOwner();
+                    case 10 -> tempAppointment();
+                    case 11 -> tempOwnerAndAppointment();
+                    case 12 -> tempVipDiscount();
 
                     case 0 -> {
                         sc.close();
@@ -148,6 +150,15 @@ public class MenuManager implements Menu {
         int max = readInt("Max age: ");
 
         List<Animal> found = animalDAO.searchByAgeRange(min, max);
+
+        System.out.println("--- Found: " + found.size() + " ---");
+        for (Animal a : found) System.out.println(a);
+    }
+
+    private void searchByMinAgeDb() throws InvalidInputException {
+        int min = readInt("Min age: ");
+
+        List<Animal> found = animalDAO.searchByMinAge(min);
 
         System.out.println("--- Found: " + found.size() + " ---");
         for (Animal a : found) System.out.println(a);
