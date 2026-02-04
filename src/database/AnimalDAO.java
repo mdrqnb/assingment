@@ -142,8 +142,7 @@ public class AnimalDAO {
 
     public List<Animal> searchByName(String partOfName) {
         List<Animal> list = new ArrayList<>();
-        String sql = "SELECT animal_id, name, type, age, healthy " +
-                "FROM animal WHERE name ILIKE ? ORDER BY name";
+        String sql = "SELECT animal_id, name, type, age, healthy FROM animal WHERE name ILIKE ? ORDER BY name";
         Connection c = DatabaseConnection.getConnection();
         if (c == null)
             return list;
@@ -173,9 +172,7 @@ public class AnimalDAO {
 
     public List<Animal> searchByAgeRange(int minAge, int maxAge) {
         List<Animal> list = new ArrayList<>();
-        String sql = "SELECT animal_id, name, type, age, healthy " +
-                "FROM animal WHERE age BETWEEN ? AND ? " +
-                "ORDER BY age DESC";
+        String sql = "SELECT animal_id, name, type, age, healthy FROM animal WHERE age BETWEEN ? AND ? ORDER BY age DESC";
         Connection c = DatabaseConnection.getConnection();
         if (c == null)
             return list;
@@ -206,11 +203,10 @@ public class AnimalDAO {
 
     public List<Animal> searchByMinAge(int minAge) {
         List<Animal> list = new ArrayList<>();
-        String sql = "SELECT animal_id, name, type, age, healthy " +
-                "FROM animal WHERE age >= ? " +
-                "ORDER BY age DESC";
+        String sql = "SELECT animal_id, name, type, age, healthy FROM animal WHERE age >= ? ORDER BY age DESC";
         Connection c = DatabaseConnection.getConnection();
-        if (c == null) return list;
+        if (c == null)
+            return list;
 
         try (PreparedStatement st = c.prepareStatement(sql)) {
             st.setInt(1, minAge);
