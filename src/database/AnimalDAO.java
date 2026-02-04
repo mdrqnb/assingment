@@ -1,6 +1,5 @@
 package database;
 
-import jdk.jshell.spi.SPIResolutionException;
 import model.Animal;
 import model.Cat;
 import model.Dog;
@@ -17,7 +16,7 @@ public class AnimalDAO {
         if (c == null)
             return false;
 
-        try (PreparedStatement st = c.prepareStatement(sql)){
+        try (PreparedStatement st = c.prepareStatement(sql)) {
             st.setString(1, animal.getName());
             st.setString(2, animal.getType());
             st.setInt(3, animal.getAge());
@@ -46,7 +45,7 @@ public class AnimalDAO {
         try (PreparedStatement st = c.prepareStatement(sql);
              ResultSet rs = st.executeQuery()) {
 
-            System.out.println("\n All animals from DB ");
+            System.out.println("\nAll animals from DB");
             while (rs.next()) {
                 System.out.println(
                         rs.getInt("animal_id") + ") " +
