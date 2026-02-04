@@ -204,37 +204,6 @@ public class AnimalDAO {
         }
     }
 
-    public List<Animal> searchByMinAge(int minAge) {
-        List<Animal> list = new ArrayList<>();
-        String sql = "SELECT animal_id, name, type, age, healthy " +
-                "FROM animal WHERE age >= ? " +
-                "ORDER BY age DESC";
-        Connection c = DatabaseConnection.getConnection();
-        if (c == null) return list;
-
-        try (PreparedStatement st = c.prepareStatement(sql)) {
-            st.setInt(1, minAge);
-
-            try (ResultSet rs = st.executeQuery()) {
-                while (rs.next()) {
-                    Animal a = extractAnimal(rs);
-                    if (a != null)
-                        list.add(a);
-                }
-            }
-            System.out.println("Found: " + list.size());
-            return list;
-
-        } catch (SQLException e) {
-            System.out.println("Search failed");
-            e.printStackTrace();
-            return list;
-
-        } finally {
-            DatabaseConnection.closeConnection(c);
-        }
-    }
-
     private Animal extractAnimal(ResultSet rs) throws SQLException {
         String name = rs.getString("name");
         String type = rs.getString("type");
