@@ -1,5 +1,6 @@
 package database;
 
+import jdk.jshell.spi.SPIResolutionException;
 import model.Animal;
 import model.Cat;
 import model.Dog;
@@ -242,10 +243,10 @@ public class AnimalDAO {
         boolean healthy = rs.getBoolean("healthy");
 
         if (type != null && type.equalsIgnoreCase("dog")) {
-            return new Dog(name, age, healthy, "");
+            return new Dog(name, age, healthy, "unknown");
         }
         if (type != null && type.equalsIgnoreCase("cat")) {
-            return new Cat(name, age, healthy, "");
+            return new Cat(name, age, healthy, "unknown");
         }
         return null;
     }
