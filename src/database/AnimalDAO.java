@@ -13,7 +13,8 @@ public class AnimalDAO {
     public boolean insertAnimal(Animal animal) {
         String sql = "INSERT INTO animal (name, type, age, healthy) VALUES (?, ?, ?, ?)";
         Connection c = DatabaseConnection.getConnection();
-        if (c == null) return false;
+        if (c == null)
+            return false;
 
         try (PreparedStatement st = c.prepareStatement(sql)) {
             st.setString(1, animal.getName());
@@ -38,7 +39,8 @@ public class AnimalDAO {
     public void printAllAnimals() {
         String sql = "SELECT animal_id, name, type, age, healthy FROM animal ORDER BY animal_id";
         Connection c = DatabaseConnection.getConnection();
-        if (c == null) return;
+        if (c == null)
+            return;
 
         try (PreparedStatement st = c.prepareStatement(sql);
              ResultSet rs = st.executeQuery()) {
@@ -65,7 +67,8 @@ public class AnimalDAO {
     public Animal getAnimalById(int animalId) {
         String sql = "SELECT animal_id, name, type, age, healthy FROM animal WHERE animal_id = ?";
         Connection c = DatabaseConnection.getConnection();
-        if (c == null) return null;
+        if (c == null)
+            return null;
 
         try (PreparedStatement st = c.prepareStatement(sql)) {
             st.setInt(1, animalId);
@@ -90,7 +93,8 @@ public class AnimalDAO {
     public boolean updateAnimal(int animalId, String name, String type, int age, boolean healthy) {
         String sql = "UPDATE animal SET name = ?, type = ?, age = ?, healthy = ? WHERE animal_id = ?";
         Connection c = DatabaseConnection.getConnection();
-        if (c == null) return false;
+        if (c == null)
+            return false;
 
         try (PreparedStatement st = c.prepareStatement(sql)) {
             st.setString(1, name);
@@ -116,7 +120,8 @@ public class AnimalDAO {
     public boolean deleteAnimal(int animalId) {
         String sql = "DELETE FROM animal WHERE animal_id = ?";
         Connection c = DatabaseConnection.getConnection();
-        if (c == null) return false;
+        if (c == null)
+            return false;
 
         try (PreparedStatement st = c.prepareStatement(sql)) {
             st.setInt(1, animalId);
@@ -140,7 +145,8 @@ public class AnimalDAO {
         String sql = "SELECT animal_id, name, type, age, healthy " +
                 "FROM animal WHERE name ILIKE ? ORDER BY name";
         Connection c = DatabaseConnection.getConnection();
-        if (c == null) return list;
+        if (c == null)
+            return list;
 
         try (PreparedStatement st = c.prepareStatement(sql)) {
             st.setString(1, "%" + partOfName + "%");
@@ -148,7 +154,8 @@ public class AnimalDAO {
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     Animal a = extractAnimal(rs);
-                    if (a != null) list.add(a);
+                    if (a != null)
+                        list.add(a);
                 }
             }
             System.out.println("Found: " + list.size());
@@ -170,7 +177,8 @@ public class AnimalDAO {
                 "FROM animal WHERE age BETWEEN ? AND ? " +
                 "ORDER BY age DESC";
         Connection c = DatabaseConnection.getConnection();
-        if (c == null) return list;
+        if (c == null)
+            return list;
 
         try (PreparedStatement st = c.prepareStatement(sql)) {
             st.setInt(1, minAge);
@@ -179,7 +187,8 @@ public class AnimalDAO {
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     Animal a = extractAnimal(rs);
-                    if (a != null) list.add(a);
+                    if (a != null)
+                        list.add(a);
                 }
             }
             System.out.println("Found: " + list.size());
@@ -209,7 +218,8 @@ public class AnimalDAO {
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     Animal a = extractAnimal(rs);
-                    if (a != null) list.add(a);
+                    if (a != null)
+                        list.add(a);
                 }
             }
             System.out.println("Found: " + list.size());
